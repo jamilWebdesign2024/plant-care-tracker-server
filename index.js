@@ -26,6 +26,31 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+    const planCareCollection = client.db('planCareDB').collection('plantCare')
+
+    const userCollection = client.db('plantCareDB').collection('users')
+
+
+
+
+
+    // user related APIS
+    app.get('/users', async(req, res)=>{
+      const result = await userCollection.find().toArray();
+      res.send(result);
+    })
+
+
+
+
+
+    app.post('/users', async(req, res)=>{
+      const userProfile =req.body;
+      console.log(userProfile);
+      const result = await userCollection.insertOne(userProfile);
+      res.send(result);
+      
+    })
 
 
     
