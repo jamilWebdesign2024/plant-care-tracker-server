@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.1gwegko.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -49,6 +49,13 @@ async function run() {
       const result = await plantCollection.insertOne(newPlants);
       res.send(result);
       
+    })
+
+    app.delete('/plants/:id', async(req, res) =>{
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)}
+        const result = await plantCollection.deleteOne(query);
+        res.send(result);
     })
 
 
