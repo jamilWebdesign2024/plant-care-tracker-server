@@ -51,6 +51,27 @@ async function run() {
       
     })
 
+
+    app.get('/plants/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const result = await plantCollection.findOne(filter);
+      res.send(result);
+    });
+
+    // ✅ PUT to update a plant
+    app.put('/plants/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedPlant = req.body;
+      const updatedDoc = {
+        $set: updatedPlant
+      };
+      const result = await plantCollection.updateOne(filter, updatedDoc, options);
+      res.send(result);
+    });
+
     app.delete('/plants/:id', async(req, res) =>{
         const id = req.params.id;
         const query = {_id: new ObjectId(id)}
